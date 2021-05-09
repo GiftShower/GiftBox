@@ -120,7 +120,7 @@ object Giftbox {
                         if(message.content.contains(prefix[0]))
                         {
                             println(prefix[0])
-                            command(prefix[0], it, message, channel, guild)
+                            command(prefix[0], it, message, channel, guild, System.currentTimeMillis())
                         }
                     }
             }
