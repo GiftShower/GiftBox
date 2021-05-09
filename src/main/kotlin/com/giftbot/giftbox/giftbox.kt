@@ -38,7 +38,7 @@ val helps = try {
     ClassLoader.getSystemResource("help.txt").readText().trim()
 } catch (error: Exception) {
     throw RuntimeException(
-        "Failed to load Help list", error
+        "Failed to load help list", error
     )
 }
 
