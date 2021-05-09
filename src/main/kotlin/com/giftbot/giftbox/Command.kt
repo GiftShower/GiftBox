@@ -17,7 +17,7 @@ suspend fun command(prefix: String, event: MessageCreateEvent, message: Message,
         if(message.content.substringAfter(" ") != " "){
             Song().play(event, message.content.substringAfter(" "))
         }
-        else channel.createMessage("No").awaitSingle()
+        else channel.createMessage("Nothing was given").awaitSingle()
     }
     if(message.content == prefix + "stop") Song().leave(event)
 }
