@@ -24,10 +24,10 @@ suspend fun command(prefix: String, event: MessageCreateEvent, message: Message,
     if (message.content == prefix +"info") Info().callinfo(guild, channel)
     if (message.content == prefix + "help")Callhelp().showhelp(prefix, channel)
     if (message.content.substringBefore(" ") == prefix + "setprefix") SetPrfx().setPrefix(channel, message, guild)
-    if (message.content.substringBefore(" ") == prefix + "join") Song().play(event, null)
+    if (message.content.substringBefore(" ") == prefix + "join") Song().play(event, null, channel)
     if(message.content.substringBefore(" ") == prefix + "play"){
         if(message.content.substringAfter(" ") != " "){
-            Song().play(event, message.content.substringAfter(" "))
+            Song().play(event, message.content.substringAfter(" "), channel)
         }
         else channel.createMessage("Nothing was given").awaitSingle()
     }
