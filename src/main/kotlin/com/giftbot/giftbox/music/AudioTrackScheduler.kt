@@ -4,6 +4,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason
+import discord4j.core.`object`.entity.channel.MessageChannel
 import java.util.*
 
 
@@ -14,16 +15,19 @@ class AudioTrackScheduler(val player: AudioPlayer) : AudioEventAdapter() {
     }
 
     @JvmOverloads
-    fun play(track: AudioTrack, force: Boolean = false): Boolean {
+    fun play(track: AudioTrack, channel: MessageChannel?, force: Boolean = false): Boolean {
         val playing: Boolean = player.startTrack(track, !force)
         if (!playing) {
+            if (channel != null) {
+                channel.createMessage("Added to Queue!").block()
+            }
             queue.add(track)
         }
         return playing
     }
 
     private fun skip(): Boolean {
-        return queue.isNotEmpty() && play(queue.removeAt(0), true)
+        return queue.isNotEmpty() && play(queue.removeAt(0), null, true)
     }
 
     override fun onTrackEnd(player: AudioPlayer?, track: AudioTrack?, endReason: AudioTrackEndReason) {

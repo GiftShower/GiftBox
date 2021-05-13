@@ -1,6 +1,5 @@
 package com.giftbot.giftbox
 
-import com.giftbot.giftbox.music.AutoByeBye
 import com.sedmelluq.discord.lavaplayer.format.AudioDataFormat
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
@@ -8,18 +7,14 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrameBufferFactory
 import com.sedmelluq.discord.lavaplayer.track.playback.NonAllocatingAudioFrameBuffer
 import discord4j.core.DiscordClient
-import discord4j.core.event.domain.VoiceStateUpdateEvent
-import discord4j.core.event.domain.lifecycle.DisconnectEvent
 import discord4j.core.event.domain.lifecycle.ReadyEvent
 import discord4j.core.event.domain.message.MessageCreateEvent
-import discord4j.discordjson.json.gateway.VoiceStateUpdate
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitSingle
 import kotlinx.coroutines.reactor.mono
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 
@@ -120,7 +115,7 @@ object Giftbox {
                         if(message.content.contains(prefix[0]))
                         {
                             println(prefix[0])
-                            command(prefix[0], it, message, channel, guild, System.currentTimeMillis())
+                            command(prefix[0], it, message, channel, guild)
                         }
                     }
             }

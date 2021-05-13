@@ -32,16 +32,24 @@ class Song{
         if(song?.contains("https://") == false){
             val (id, title, thumbnail) = Search.main("searcher", song)
             songArg = "https://www.youtube.com/watch?v=$id"
+            mch.createEmbed {
+                it.setTitle("Song found!")
+                    .setThumbnail(thumbnail)
+                    .setDescription(title)
+            }.block()
         }
+        else if(song != null){
+            mch.createMessage("Song found!").block()
+        }
+
 
         if(song != null)
         {
-            mch.createMessage("**Searching...**").block()
             PLAYER_MANAGER!!.loadItemOrdered(manager, songArg, object:
                 AudioLoadResultHandler {
                 override fun trackLoaded(track: AudioTrack?) {
                     if (track != null) {
-                        AudioTrackScheduler(GuildAudioManager.of(channel.guildId).player).play(track)
+                        AudioTrackScheduler(GuildAudioManager.of(channel.guildId).player).play(track, mch)
                     }
                 }
 
