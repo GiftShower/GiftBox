@@ -16,19 +16,21 @@ import discord4j.core.event.domain.message.MessageCreateEvent
 import discord4j.core.spec.VoiceChannelJoinSpec
 import discord4j.voice.AudioProvider
 import discord4j.voice.VoiceConnection
+import kotlinx.coroutines.reactive.awaitFirst
+import kotlinx.coroutines.reactive.awaitSingle
 
 
 class Song{
-    fun play(event: MessageCreateEvent, song: String?, mch: MessageChannel){
+    suspend fun play(event: MessageCreateEvent, song: String?, mch: MessageChannel){
         var songArg = song
         val member: Member = event.member.orElse(null)
-        val voiceState: VoiceState = member.voiceState.block()
-        val channel: VoiceChannel = voiceState.channel.block()
+        val voiceState: VoiceState = member.voiceState.awaitSingle()
+        val channel: VoiceChannel = voiceState.channel.awaitSingle()
         val manager: GuildAudioManager = GuildAudioManager.of(channel.guildId)
         val provider: AudioProvider = manager.provider
         val connection: VoiceConnection? =
                 channel.join { spec: VoiceChannelJoinSpec -> spec.setProvider(provider) }
-                    .block()
+                    .awaitSingle()
         if(song?.contains("https://") == false){
             val (id, title, thumbnail) = Search.main("searcher", song)
             songArg = "https://www.youtube.com/watch?v=$id"
@@ -36,10 +38,10 @@ class Song{
                 it.setTitle("Song found!")
                     .setThumbnail(thumbnail)
                     .setDescription(title)
-            }.block()
+            }.awaitSingle()
         }
         else if(song != null){
-            mch.createMessage("Song found!").block()
+            mch.createMessage("Song found!").awaitSingle()
         }
 
 
@@ -67,7 +69,9 @@ class Song{
         }
     }
 
-    fun leave(event: MessageCreateEvent,channel: VoiceChannel? = event.member.orElse(null).voiceState.block().channel.block()){
+    suspend fun leave(event: MessageCreateEvent, member: Member = event.member.orElse(null)){
+        val voiceState = member.voiceState.awaitSingle()
+        val channel = voiceState.channel.awaitSingle()
         if (channel != null) {
             AudioTrackScheduler(GuildAudioManager.of(channel.guildId).player).player.stopTrack()
         }

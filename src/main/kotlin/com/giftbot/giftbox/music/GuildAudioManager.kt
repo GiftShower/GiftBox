@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 class GuildAudioManager private constructor() {
     val player: AudioPlayer = PLAYER_MANAGER!!.createPlayer()
-    val scheduler: AudioTrackScheduler = AudioTrackScheduler(player)
+    private val scheduler: AudioTrackScheduler = AudioTrackScheduler(player)
     val provider: LavaPlayerAudioProvider = LavaPlayerAudioProvider(player)
 
     companion object {

@@ -9,7 +9,7 @@ import java.lang.Void
 import java.time.Duration
 
 class AutoByeBye {
-    val channel: VoiceChannel? = null
+    private val channel: VoiceChannel? = null
     val onDisconnect: Mono<Void> = channel!!.join { }
         .flatMap { connection ->
             // The bot itself has a VoiceState; 1 VoiceState signals bot is alone
@@ -28,7 +28,7 @@ class AutoByeBye {
             // Note the first filter is not strictly necessary, but it does prevent many unnecessary cache calls
             val onEvent: Mono<Void> = channel.client.eventDispatcher.on(VoiceStateUpdateEvent::class.java)
                 .filter { event ->
-                    event.getOld().flatMap(VoiceState::getChannelId).map(channel.id::equals).orElse(false)
+                    event.old.flatMap(VoiceState::getChannelId).map(channel.id::equals).orElse(false)
                 }
                 .filterWhen { voiceStateCounter }
                 .next()

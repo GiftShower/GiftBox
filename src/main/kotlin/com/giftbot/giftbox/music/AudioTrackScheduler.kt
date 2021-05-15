@@ -18,9 +18,7 @@ class AudioTrackScheduler(val player: AudioPlayer) : AudioEventAdapter() {
     fun play(track: AudioTrack, channel: MessageChannel?, force: Boolean = false): Boolean {
         val playing: Boolean = player.startTrack(track, !force)
         if (!playing) {
-            if (channel != null) {
-                channel.createMessage("Added to Queue!").block()
-            }
+            channel?.createMessage("Added to Queue!")?.block()
             queue.add(track)
         }
         return playing

@@ -13,11 +13,11 @@ class Info {
         val imgUrl: String = doubleCut(guild.getIconUrl(Image.Format.PNG).toString(), "[", "]")
         val svName: String = guild.name
         val usrCount: String = guild.memberCount.toString()
-        val rlCount = guild.roles.count().block().toString()
-        val svServ: String = doubleCut(guild.region.block().toString(), "name=", ",")
-        val svOwn: String = doubleCut(guild.owner.block().toString(), "username=", ",") +
+        val rlCount = guild.roles.count().awaitSingle()
+        val svServ: String = doubleCut(guild.region.awaitSingle().toString(), "name=", ",")
+        val svOwn: String = doubleCut(guild.owner.awaitSingle().toString(), "username=", ",") +
                 "#" +
-                doubleCut(guild.owner.block().toString(), "discriminator=", ",")
+                doubleCut(guild.owner.awaitSingle().toString(), "discriminator=", ",")
 
         channel.createEmbed() {
             it.setColor(discord4j.rest.util.Color.CYAN)
@@ -27,7 +27,7 @@ class Info {
                 .addField("Owner", svOwn, true)
                 .addField("Server Region", svServ, false)
                 .addField("User Count", usrCount, true)
-                .addField("Role Count", rlCount, true)
+                .addField("Role Count", rlCount.toString(), true)
                 .addField("Server Icon", imgUrl, false)
                 .setTimestamp(Instant.now())
         }.awaitSingle()
