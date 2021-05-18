@@ -10,7 +10,7 @@ import java.time.Instant
 class Info {
     suspend fun callinfo(guild: Guild, channel: MessageChannel){
         println("이거 출력 되면 플원 아님")
-        val imgUrl: String = doubleCut(guild.getIconUrl(Image.Format.PNG).toString(), "[", "]")
+        val imgUrl: String = doubleCut(guild.getIconUrl(Image.Format.GIF).toString(), "[", "]")
         val svName: String = guild.name
         val usrCount: String = guild.memberCount.toString()
         val rlCount = guild.roles.count().awaitSingle()

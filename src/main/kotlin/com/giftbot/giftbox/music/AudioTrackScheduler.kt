@@ -24,7 +24,7 @@ class AudioTrackScheduler(val player: AudioPlayer) : AudioEventAdapter() {
         return playing
     }
 
-    private fun skip(): Boolean {
+    fun skip(): Boolean {
         return queue.isNotEmpty() && play(queue.removeAt(0), null, true)
     }
 

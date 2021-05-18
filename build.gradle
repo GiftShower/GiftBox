@@ -41,6 +41,9 @@ dependencies {
     compile ("com.google.http-client:google-http-client-jackson2:1.39.2")
     compile ("com.google.api-client:google-api-client-java6:1.31.3")
     compile ("com.google.oauth-client:google-oauth-client-jetty:1.30.4")
+
+    //HTML Parser
+    implementation 'org.jsoup:jsoup:1.13.1'
 }
 
 test {

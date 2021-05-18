@@ -1,4 +1,4 @@
-package com.giftbot.giftbox
+package com.giftbot.giftbox.google
 
 import com.google.api.client.googleapis.json.GoogleJsonResponseException
 import com.google.api.services.youtube.YouTube

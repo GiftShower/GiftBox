@@ -1,4 +1,4 @@
-package com.giftbot.giftbox
+package com.giftbot.giftbox.google
 
 import com.google.api.client.http.HttpTransport
 import com.google.api.client.http.javanet.NetHttpTransport
@@ -7,10 +7,8 @@ import kotlin.Throws
 import java.io.IOException
 import java.io.InputStreamReader
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets
-import com.giftbot.giftbox.Auth
 import com.google.api.client.auth.oauth2.Credential
 import com.google.api.client.util.store.FileDataStoreFactory
-import com.google.api.client.util.store.DataStore
 import com.google.api.client.auth.oauth2.StoredCredential
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver

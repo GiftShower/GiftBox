@@ -6,8 +6,7 @@ import kotlinx.coroutines.reactive.awaitSingle
 
 class Callhelp {
     suspend fun showhelp(prefix: String, channel: MessageChannel){
-        var hlps = helps
-        hlps.replace("<prefix>", prefix).also { hlps = it }
+        val hlps = helps.replace("<prefix>", prefix)
         channel.createEmbed() {
             it.setColor(discord4j.rest.util.Color.RUBY)
                 .setTitle("Help List")

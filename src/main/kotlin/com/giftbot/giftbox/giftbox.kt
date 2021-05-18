@@ -92,8 +92,8 @@ object Giftbox {
                             transaction {
                                 Actors.slice(Actors.prfxes).
                                 select { Actors.name eq guild.name }.
-                                withDistinct().map { rsrw -> it
-                                    rsrw[Actors.prfxes]
+                                withDistinct().map {
+                                    it[Actors.prfxes]
                                 }
                             }
                         if (prefix.isEmpty()){
@@ -107,8 +107,8 @@ object Giftbox {
                                 transaction {
                                     Actors.slice(Actors.prfxes).
                                     select { Actors.name eq guild.name }.
-                                    withDistinct().map { rsrw -> it
-                                        rsrw[Actors.prfxes]
+                                    withDistinct().map { 
+                                        it[Actors.prfxes]
                                     }
                                 }
                         }
@@ -119,6 +119,6 @@ object Giftbox {
                         }
                     }
             }
-        }.block()
+        }.awaitSingle()
     }
 }
