@@ -1,4 +1,4 @@
-package com.giftbot.giftbox.apex
+package com.giftbot.giftbox.game
 
 import com.giftbot.giftbox.doubleCut
 import discord4j.core.`object`.entity.channel.MessageChannel

@@ -1,12 +1,17 @@
 package com.giftbot.giftbox
 
+import com.giftbot.giftbox.database.Actors
+import com.giftbot.giftbox.database.Modules
 import com.sedmelluq.discord.lavaplayer.format.AudioDataFormat
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrameBufferFactory
 import com.sedmelluq.discord.lavaplayer.track.playback.NonAllocatingAudioFrameBuffer
+import com.sun.org.apache.xpath.internal.operations.Mod
+import de.jan.r6statsjava.R6Stats
 import discord4j.core.DiscordClient
+import discord4j.core.`object`.entity.channel.MessageChannel
 import discord4j.core.event.domain.lifecycle.ReadyEvent
 import discord4j.core.event.domain.message.MessageCreateEvent
 import kotlinx.coroutines.flow.collect
@@ -27,7 +32,9 @@ private val botTok = try {
                 " src/main/resources and paste the bot token into that file.", error
     )
 }
-
+var sans = 0
+var sansname = "noname"
+lateinit var sanschannel: MessageChannel
 //help list
 val helps = try {
     ClassLoader.getSystemResource("help.txt").readText().trim()
@@ -37,13 +44,26 @@ val helps = try {
     )
 }
 
+val r6key = try {
+    ClassLoader.getSystemResource("r6apikey.txt").readText().trim()
+} catch (error: Exception) {
+    throw RuntimeException(
+        "Failed to load apikey", error
+    )
+}
+
 var PLAYER_MANAGER: AudioPlayerManager? = null
+
+val r6 by lazy { R6Stats(r6key) }
+
+lateinit var client: DiscordClient
 
 suspend fun main() {
     Giftbox.main()
 }
 object Giftbox {
     init {
+        client = DiscordClient.create(botTok)
         PLAYER_MANAGER = DefaultAudioPlayerManager()
         (PLAYER_MANAGER as DefaultAudioPlayerManager).configuration.frameBufferFactory =
             AudioFrameBufferFactory { bufferDuration: Int, format: AudioDataFormat?, stopping: AtomicBoolean? ->
@@ -73,9 +93,9 @@ object Giftbox {
         transaction {
             addLogger(StdOutSqlLogger)
             SchemaUtils.createMissingTablesAndColumns(Actors)
+            SchemaUtils.createMissingTablesAndColumns(Modules)
         }
 
-        val client = DiscordClient.create(botTok)
         client.withGateway {
             mono {
                 it.on(ReadyEvent::class.java)
@@ -113,10 +133,7 @@ object Giftbox {
                                 }
                         }
                         if(message.content.contains(prefix[0]))
-                        {
-                            println(prefix[0])
                             command(prefix[0], it, message, channel, guild)
-                        }
                     }
             }
         }.awaitSingle()

@@ -1,4 +1,4 @@
-package com.giftbot.giftbox
+package com.giftbot.giftbox.database
 
 import org.jetbrains.exposed.sql.Table
 
