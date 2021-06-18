@@ -12,6 +12,7 @@ import com.sun.org.apache.xpath.internal.operations.Mod
 import de.jan.r6statsjava.R6Stats
 import discord4j.core.DiscordClient
 import discord4j.core.`object`.entity.channel.MessageChannel
+import discord4j.core.event.domain.VoiceServerUpdateEvent
 import discord4j.core.event.domain.lifecycle.ReadyEvent
 import discord4j.core.event.domain.message.MessageCreateEvent
 import kotlinx.coroutines.flow.collect
@@ -56,14 +57,11 @@ var PLAYER_MANAGER: AudioPlayerManager? = null
 
 val r6 by lazy { R6Stats(r6key) }
 
-lateinit var client: DiscordClient
-
 suspend fun main() {
     Giftbox.main()
 }
 object Giftbox {
     init {
-        client = DiscordClient.create(botTok)
         PLAYER_MANAGER = DefaultAudioPlayerManager()
         (PLAYER_MANAGER as DefaultAudioPlayerManager).configuration.frameBufferFactory =
             AudioFrameBufferFactory { bufferDuration: Int, format: AudioDataFormat?, stopping: AtomicBoolean? ->
@@ -96,6 +94,7 @@ object Giftbox {
             SchemaUtils.createMissingTablesAndColumns(Modules)
         }
 
+        val client = DiscordClient.create(botTok)
         client.withGateway {
             mono {
                 it.on(ReadyEvent::class.java)
@@ -134,6 +133,11 @@ object Giftbox {
                         }
                         if(message.content.contains(prefix[0]))
                             command(prefix[0], it, message, channel, guild)
+                    }
+                it.on(VoiceServerUpdateEvent::class.java)
+                    .asFlow()
+                    .collect {
+                        val guild = it.guild.awaitSingle()
                     }
             }
         }.awaitSingle()

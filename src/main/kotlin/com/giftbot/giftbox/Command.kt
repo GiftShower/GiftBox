@@ -15,6 +15,7 @@ import discord4j.core.`object`.entity.Message
 import discord4j.core.`object`.entity.channel.MessageChannel
 import discord4j.core.`object`.entity.channel.VoiceChannel
 import discord4j.core.event.domain.message.MessageCreateEvent
+import discord4j.voice.VoiceConnection
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.reactive.awaitSingle

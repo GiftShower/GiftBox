@@ -1,7 +1,6 @@
 package com.giftbot.giftbox.cmds
 
 import com.giftbot.giftbox.PLAYER_MANAGER
-import com.giftbot.giftbox.client
 import com.giftbot.giftbox.google.Search
 import com.giftbot.giftbox.music.AudioTrackScheduler
 import com.giftbot.giftbox.music.GuildAudioManager
@@ -17,12 +16,10 @@ import discord4j.core.`object`.entity.channel.MessageChannel
 import discord4j.core.`object`.entity.channel.VoiceChannel
 import discord4j.core.event.domain.message.MessageCreateEvent
 import discord4j.core.spec.VoiceChannelJoinSpec
-import discord4j.rest.request.Router
-import discord4j.rest.service.GuildService
+import discord4j.discordjson.json.UpdateSelfVoiceStateRequest
 import discord4j.voice.AudioProvider
 import discord4j.voice.VoiceConnection
 import kotlinx.coroutines.reactive.awaitSingle
-import okhttp3.internal.applyConnectionSpec
 
 
 class Song{
@@ -38,7 +35,8 @@ class Song{
         }.awaitSingle()
 
         if(channel.type == Channel.Type.GUILD_STAGE_VOICE) {
-            TODO("Not Yet.")
+            val slf = guild.selfMember.awaitSingle()
+            UpdateSelfVoiceStateRequest.builder().channelId(channel.id.toString()).build().requestToSpeakTimestamp()
         }
 
         if(song?.contains("https://") == false){
@@ -86,4 +84,5 @@ class Song{
             AudioTrackScheduler(GuildAudioManager.of(channel.guildId).player).player.stopTrack()
         }
     }
+
 }
