@@ -59,7 +59,7 @@ class Song{
                 AudioLoadResultHandler {
                 override fun trackLoaded(track: AudioTrack?) {
                     if (track != null) {
-                        AudioTrackScheduler(GuildAudioManager.of(channel.guildId).player).play(track, mch)
+                        AudioTrackScheduler(manager.player).play(track, mch)
                     }
                 }
 

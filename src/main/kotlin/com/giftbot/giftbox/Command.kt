@@ -74,10 +74,10 @@ suspend fun command(prefix: String, event: MessageCreateEvent, message: Message,
             }
         }
     }
+    if (message.content.substringBefore(" ") == prefix + "setprefix") SetPrfx().setPrefix(channel, message, guild)
 
 
     if(musicOn[0]){
-        if (message.content.substringBefore(" ") == prefix + "setprefix") SetPrfx().setPrefix(channel, message, guild)
         if (message.content.substringBefore(" ") == prefix + "join") Song().play(event, null, channel, guild)
         if(message.content.substringBefore(" ") == prefix + "play"){
             if(message.content.substringAfter(" ") != " "){
@@ -87,10 +87,11 @@ suspend fun command(prefix: String, event: MessageCreateEvent, message: Message,
         }
         if(message.content == prefix + "stop") Song().leave(event)
         if(message.content == prefix + "skip") {
-            val member: Member = event.member.orElse(null)
+            /*val member: Member = event.member.orElse(null)
             val voiceState: VoiceState = member.voiceState.awaitSingle()
             val ch: VoiceChannel = voiceState.channel.awaitSingle()
-            AudioTrackScheduler(GuildAudioManager.of(ch.guildId).player).skip()
+            AudioTrackScheduler(GuildAudioManager.of(ch.guildId).player).skip()*/
+            TODO("Not Working.")
         }
     }
     //music

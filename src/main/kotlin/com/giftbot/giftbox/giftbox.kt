@@ -12,6 +12,8 @@ import com.sun.org.apache.xpath.internal.operations.Mod
 import de.jan.r6statsjava.R6Stats
 import discord4j.core.DiscordClient
 import discord4j.core.`object`.entity.channel.MessageChannel
+import discord4j.core.`object`.presence.ClientActivity
+import discord4j.core.`object`.presence.ClientPresence
 import discord4j.core.event.domain.VoiceServerUpdateEvent
 import discord4j.core.event.domain.lifecycle.ReadyEvent
 import discord4j.core.event.domain.message.MessageCreateEvent
@@ -100,6 +102,7 @@ object Giftbox {
                 it.on(ReadyEvent::class.java)
                     .subscribe {
                         println("Logged in as " + it.self.tag)
+                        it.client.updatePresence(ClientPresence.online(ClientActivity.playing("아무짓도 안하기"))).block()
                     }
                 it.on(MessageCreateEvent::class.java)
                     .asFlow()
