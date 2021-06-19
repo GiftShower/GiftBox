@@ -9,10 +9,8 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrameBufferFactory
 import com.sedmelluq.discord.lavaplayer.track.playback.NonAllocatingAudioFrameBuffer
-import com.sun.org.apache.xpath.internal.operations.Mod
 import de.jan.r6statsjava.R6Stats
 import discord4j.core.DiscordClient
-import discord4j.core.`object`.entity.channel.MessageChannel
 import discord4j.core.`object`.presence.ClientActivity
 import discord4j.core.`object`.presence.ClientPresence
 import discord4j.core.event.domain.VoiceServerUpdateEvent
@@ -37,9 +35,7 @@ private val botTok = try {
                 " src/main/resources and paste the bot token into that file.", error
     )
 }
-var sans = 0
-var sansname = "noname"
-lateinit var sanschannel: MessageChannel
+
 //help list
 val helps = try {
     ClassLoader.getSystemResource("help.txt").readText().trim()
@@ -61,7 +57,7 @@ var PLAYER_MANAGER: AudioPlayerManager? = null
 
 val r6 by lazy { R6Stats(r6key) }
 
-val queue: MutableList<String> = Collections.synchronizedList(LinkedList())
+val queue: MutableList<Pair<String, AudioTrack>> = Collections.synchronizedList(LinkedList())
 
 suspend fun main() {
     Giftbox.main()
