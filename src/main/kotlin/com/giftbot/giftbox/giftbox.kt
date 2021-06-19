@@ -6,6 +6,7 @@ import com.sedmelluq.discord.lavaplayer.format.AudioDataFormat
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrameBufferFactory
 import com.sedmelluq.discord.lavaplayer.track.playback.NonAllocatingAudioFrameBuffer
 import com.sun.org.apache.xpath.internal.operations.Mod
@@ -23,6 +24,7 @@ import kotlinx.coroutines.reactive.awaitSingle
 import kotlinx.coroutines.reactor.mono
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 
@@ -58,6 +60,8 @@ val r6key = try {
 var PLAYER_MANAGER: AudioPlayerManager? = null
 
 val r6 by lazy { R6Stats(r6key) }
+
+val queue: MutableList<String> = Collections.synchronizedList(LinkedList())
 
 suspend fun main() {
     Giftbox.main()

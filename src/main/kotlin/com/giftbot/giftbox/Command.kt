@@ -87,11 +87,18 @@ suspend fun command(prefix: String, event: MessageCreateEvent, message: Message,
         }
         if(message.content == prefix + "stop") Song().leave(event)
         if(message.content == prefix + "skip") {
-            /*val member: Member = event.member.orElse(null)
+            val member: Member = event.member.orElse(null)
             val voiceState: VoiceState = member.voiceState.awaitSingle()
             val ch: VoiceChannel = voiceState.channel.awaitSingle()
-            AudioTrackScheduler(GuildAudioManager.of(ch.guildId).player).skip()*/
-            TODO("Not Working.")
+            val manager: GuildAudioManager = GuildAudioManager.of(ch.guildId)
+            AudioTrackScheduler(manager.player).skip()
+        }
+        if(message.content == prefix + "queue"){
+            val member: Member = event.member.orElse(null)
+            val voiceState: VoiceState = member.voiceState.awaitSingle()
+            val ch: VoiceChannel = voiceState.channel.awaitSingle()
+            val manager: GuildAudioManager = GuildAudioManager.of(ch.guildId)
+            println(AudioTrackScheduler(manager.player).getQueue())
         }
     }
     //music
