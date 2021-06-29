@@ -101,8 +101,7 @@ object Giftbox {
             mono {
                 it.on(ReadyEvent::class.java)
                     .subscribe {
-                        println("Logged in as " + it.self.tag)
-                        it.client.updatePresence(ClientPresence.online(ClientActivity.playing("아무짓도 안하기"))).block()
+                        println("\nLogged in as " + it.self.tag)
                     }
                 it.on(MessageCreateEvent::class.java)
                     .asFlow()
@@ -136,11 +135,6 @@ object Giftbox {
                         }
                         if(message.content.contains(prefix[0]))
                             command(prefix[0], it, message, channel, guild)
-                    }
-                it.on(VoiceServerUpdateEvent::class.java)
-                    .asFlow()
-                    .collect {
-                        val guild = it.guild.awaitSingle()
                     }
             }
         }.awaitSingle()

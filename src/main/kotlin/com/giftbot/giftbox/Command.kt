@@ -6,6 +6,7 @@ import com.giftbot.giftbox.game.ApexStat
 import com.giftbot.giftbox.game.RainbowSix
 import com.giftbot.giftbox.music.AudioTrackScheduler
 import com.giftbot.giftbox.music.GuildAudioManager
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import discord4j.core.`object`.VoiceState
 import discord4j.core.`object`.entity.Guild
 import discord4j.core.`object`.entity.Member
@@ -17,6 +18,7 @@ import kotlinx.coroutines.reactive.awaitSingle
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.net.URL
 
 suspend fun command(prefix: String, event: MessageCreateEvent, message: Message, channel: MessageChannel, guild: Guild) {
     var musicOn = transaction {
@@ -66,7 +68,10 @@ suspend fun command(prefix: String, event: MessageCreateEvent, message: Message,
         }
     }
     if (message.content.substringBefore(" ") == prefix + "setprefix") SetPrfx().setPrefix(channel, message, guild)
-
+    if (message.content == prefix + "hanriver") {
+        val a = URL("https://api.hangang.msub.kr/").readText()
+        channel.createMessage("현재 한강 수온은 " + doubleCut(a, "temp\":\"", "\"") + "ºC 입니다.").awaitSingle()
+    }
 
     if(musicOn[0]){
         if (message.content.substringBefore(" ") == prefix + "join") Song().play(event, null, channel, guild)
@@ -89,7 +94,15 @@ suspend fun command(prefix: String, event: MessageCreateEvent, message: Message,
             val voiceState: VoiceState = member.voiceState.awaitSingle()
             val ch: VoiceChannel = voiceState.channel.awaitSingle()
             val manager: GuildAudioManager = GuildAudioManager.of(ch.guildId)
-            println(AudioTrackScheduler(manager.player).getQueue())
+            val rT: List<AudioTrack> = AudioTrackScheduler(manager.player).getQueue()
+            var mes = ""
+            for(i in 0..rT.lastIndex){
+                mes += "${i+1}: ${rT[i].info.title}\n"
+            }
+            channel.createEmbed {
+                it.setTitle("Queue")
+                    .setDescription(mes)
+            }.awaitSingle()
         }
     }
     //music
