@@ -17,6 +17,7 @@ import com.google.api.client.json.JsonFactory
 import java.io.File
 import java.io.Reader
 import java.util.*
+import kotlin.system.exitProcess
 
 /**
  * Shared class used by every sample. Contains methods for authorizing a user and caching credentials.
@@ -62,7 +63,7 @@ object Auth {
                 "Enter Client ID and Secret from https://console.developers.google.com/project/_/apiui/credential "
                         + "into src/main/resources/client_secrets.json"
             )
-            System.exit(1)
+            exitProcess(1)
         }
 
         // This creates the credentials datastore at ~/.oauth-credentials/${credentialDatastore}

@@ -1,12 +1,6 @@
-package com.giftbot.giftbox
+/*package com.giftbot.giftbox
 
-import com.giftbot.giftbox.cmds.*
-import com.giftbot.giftbox.database.Modules
-import com.giftbot.giftbox.game.ApexStat
-import com.giftbot.giftbox.game.RainbowSix
-import com.giftbot.giftbox.music.AudioTrackScheduler
-import com.giftbot.giftbox.music.GuildAudioManager
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack
+
 import discord4j.core.`object`.VoiceState
 import discord4j.core.`object`.entity.Guild
 import discord4j.core.`object`.entity.Member
@@ -15,39 +9,13 @@ import discord4j.core.`object`.entity.channel.MessageChannel
 import discord4j.core.`object`.entity.channel.VoiceChannel
 import discord4j.core.event.domain.message.MessageCreateEvent
 import kotlinx.coroutines.reactive.awaitSingle
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.transactions.transaction
+
 import java.net.URL
 
 suspend fun command(prefix: String, event: MessageCreateEvent, message: Message, channel: MessageChannel, guild: Guild) {
-    var musicOn = transaction {
-        Modules.slice(Modules.museMod).
-        select { Modules.sname eq guild.name }.
-        withDistinct().map {
-            it[Modules.museMod]
-        }
-    }
-    var gameOn = transaction {
-        Modules.slice(Modules.gameMod).
-        select { Modules.sname eq guild.name }.
-        withDistinct().map {
-            it[Modules.gameMod]
-        }
-    }
+    //Database Transaction
 
-    if(musicOn.isEmpty()){
-        transaction {
-            Modules.insert {
-                it[sname] = guild.name
-                it[museMod] = true
-                it[gameMod] = true
-            }
-        }
-        musicOn = listOf(true)
-        gameOn = listOf(true)
-    }
-
+    //BasicCMD
     if (message.content == prefix + "ping"){
         channel.createMessage("Pong!").awaitSingle()
     }
@@ -73,6 +41,7 @@ suspend fun command(prefix: String, event: MessageCreateEvent, message: Message,
         channel.createMessage("현재 한강 수온은 " + doubleCut(a, "temp\":\"", "\"") + "ºC 입니다.").awaitSingle()
     }
 
+    //MusicCMD
     if(musicOn[0]){
         if (message.content.substringBefore(" ") == prefix + "join") Song().play(event, null, channel, guild)
         if(message.content.substringBefore(" ") == prefix + "play"){
@@ -105,18 +74,8 @@ suspend fun command(prefix: String, event: MessageCreateEvent, message: Message,
             }.awaitSingle()
         }
     }
-    //music
 
-    if(gameOn[0])
-    {
-        if(message.content.substringBefore(" ") == prefix + "apexstat") {
-            val apexUsername = message.content.substringAfter(" ")
-            if(message.content != prefix + "apexstat") ApexStat().GetApex(apexUsername, channel)
-        }
-        if(message.content.substringBefore(" ") == prefix + "r6") {
-            if(message.content != prefix + "rsixstat") RainbowSix(message.content.substringAfter(" ")).rainbow(channel)
-        }
-    }
+    //GameCMD
 
 
 
@@ -124,4 +83,4 @@ suspend fun command(prefix: String, event: MessageCreateEvent, message: Message,
         val msg = channel.createMessage("Testing").awaitSingle()
         msg.addReaction(ReactionEmoji.unicode("🛑")).block()
     }*/
-}
+}*/

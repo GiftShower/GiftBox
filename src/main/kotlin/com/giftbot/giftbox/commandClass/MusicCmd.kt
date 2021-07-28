@@ -1,4 +1,4 @@
-package com.giftbot.giftbox.cmds
+package com.giftbot.giftbox.commandClass
 
 interface MusicCmd {
     fun join()
