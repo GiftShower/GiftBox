@@ -4,15 +4,9 @@
 A multipurpose discord bot made with Discord4J, with
 customization to work just as you want.
 
-## Current Features
+# This project is not maintained!
 
-- Custom Prefix
-- Server Info
-- Music (Powered by lavaplayer)
-- Game Stats (Unstable)
-
-##Installation
-
-Not public ready.
+Because of errors I get everytime when I update, I finally decided to stop developing this.
+I will work on another bot with another language, but for now, this is dead.
 
 
